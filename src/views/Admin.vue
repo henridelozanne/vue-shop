@@ -6,7 +6,7 @@
                 <!-- sidebar-brand  -->
                 <div class="sidebar-item sidebar-brand">
                     <a href="#">Vue Shop</a>
-                    <div id="close-sidebar" @click="closeMenu">
+                    <div id="close-sidebar">
                         <i class="fas fa-times"></i>
                     </div>
                 </div>
@@ -91,6 +91,8 @@
 </template>
 
 <script>
+import {fb} from '../firebase';
+
 export default {
   name: "admin",
   data(){
@@ -100,9 +102,15 @@ export default {
       }
   },
   methods:{
-      closeMenu(){
-        // $(".page-wrapper").toggleClass("toggled");
-      },
+      logout() {
+          fb.auth().signOut()
+            .then(() => {
+                this.$router.replace('/');
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+      }
   },
 };
 </script>

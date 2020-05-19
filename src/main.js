@@ -6,12 +6,20 @@ import 'popper.js'
 import 'bootstrap'
 import './assets/app.scss'
 import router from './router'
-
-Vue.config.productionTip = false
+import {fb} from './firebase'
 
 Vue.component('Navbar', require('./components/Navbar.vue').default)
 
-new Vue({
-  router,
-  render: h => h(App)
-}).$mount('#app')
+
+Vue.config.productionTip = false
+
+let app = '';
+
+fb.auth().onAuthStateChanged(function() {
+  if (!app) {
+    new Vue({
+      router,
+      render: h => h(App)
+    }).$mount('#app')    
+  }
+})
