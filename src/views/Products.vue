@@ -30,14 +30,118 @@
               <button type="text" @click="saveData" class="btn btn-primary">Save data</button>
             </div>
           </div>
+
+          <hr>
+          <br>
+          <br>
+
+          <h3>Product list</h3>
+
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Modify</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="product in products" :key="product.name">
+                  <td>{{product.data().name}}</td>
+                  <td>{{product.data().price}}</td>
+                  <td>
+                    <button @click="editProduct(product)" class="btn btn-primary">Edit</button>
+                    <button @click="deleteProduct(product.id)" class="btn btn-danger">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
      
       </div>
+
+      <!-- Modal -->
+      <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="editLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="editLabel">Edit Product</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                  <!-- main product -->
+                  <div class="col-md-8">
+                    <div class="form-group">
+                      <input type="text" placeholder="Product Name" v-model="product.name" class="form-control">
+                    </div>
+
+                    <!-- <div class="form-group">
+                      <vue-editor v-model="product.description"></vue-editor>
+                    </div> -->
+                  </div>
+                  <!-- product sidebar -->
+                  <div class="col-md-4">
+                    <h4 class="display-6">Product Details</h4>
+                    <hr>
+
+                    <div class="form-group">
+                      <input type="text" placeholder="Product price" v-model="product.price" class="form-control">
+                    </div>
+
+                    <!-- <div class="form-group">
+                      <input type="text" @keyup.188="addTag" placeholder="Product tags" v-model="tag" class="form-control">
+                      
+                      <div  class="d-flex">
+                        <p v-for="tag in product.tags" :key="tag">
+                            <span class="p-1">{{tag}}</span>
+                        </p>
+
+                      </div>
+                    </div> -->
+
+
+                    <!-- <div class="form-group">
+                      <label for="product_image">Product Images</label>
+                      <input type="file" @change="uploadImage" class="form-control">
+                    </div> -->
+
+                    <div class="form-group d-flex">
+                      <div class="p-1" v-for="(image, index) in product.images" :key="index">
+                          <div class="img-wrapp">
+                              <img :src="image" alt="" width="80px">
+                              <span class="delete-img" @click="deleteImage(image,index)">X</span>
+                          </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+
+
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <!-- <button @click="addProduct()" type="button" class="btn btn-primary" v-if="modal == 'new'">Save changes</button> -->
+              <button @click="updateProduct()" type="button" class="btn btn-primary">Apply changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     
   </div>
 </template>
 
 <script>
 import {db} from '../firebase';
+import jQuery from 'jquery'
 
 export default {
   name: "Products",
@@ -49,13 +153,28 @@ export default {
       product: {
         name: null,
         price: null
-      }
+      },
+      activeItem: null,
+      products: []
     }
   },
+  created() {
+    this.readData();
+  },
   methods: {
+    readData() {
+      this.products = [];
+      db.collection("products").get().then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+              // doc.data() is never undefined for query doc snapshots
+              this.products.push(doc);
+          });
+      });
+    },
     saveData() {
       db.collection("products").add(this.product)
       .then(() => {
+          this.readData();
           this.reset();
       })
       .catch(function(error) {
@@ -63,7 +182,40 @@ export default {
       });
     },
     reset() {
-      Object.assign(this.$data, this.$options.data.apply(this));
+      this.product.name = null;
+      this.product.price = null;
+    },
+    deleteProduct(doc) {
+      if (confirm('Are you sure ?', )) {
+        db.collection("products").doc(doc).delete().then(() => {
+            this.readData();
+        }).catch(function(error) {
+            console.error("Error removing document: ", error);
+        });
+      }
+    },
+    editProduct(product) {
+      this.product = product.data();
+      jQuery('#edit').modal('show');
+      this.activeItem = product.id;
+    },
+    watcher() {
+      db.collection("products").onSnapshot((querySnapshot) => {
+          this.products = [];
+          querySnapshot.forEach((doc) => {
+              this.products.push(doc);
+          });
+      });
+    },
+    updateProduct() {
+      db.collection("products").doc(this.activeItem).update(this.product)
+        .then(() => {
+          jQuery('#edit').modal('hide');
+          this.watcher();
+        })
+        .catch((err) => {
+          console.log(err);
+        })
     }
   }
 };
