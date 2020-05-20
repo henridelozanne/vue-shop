@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import {fb} from '../firebase';
+import {fb, db} from '../firebase';
 import jQuery from 'jquery'
 
 export default {
@@ -108,8 +108,19 @@ export default {
     },
     register() {
       fb.auth().createUserWithEmailAndPassword(this.email, this.password)
-                .then(() => {
-                    jQuery('#login').modal('hide')
+                .then((user) => {
+                    jQuery('#login').modal('hide');
+
+                    db.collection('profiles').doc(user.user.uid).set({
+                      name: this.name
+                    })
+                    .then(() => {
+
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                    })
+
                     this.$router.replace('admin');
                 })
                 .catch(function(error) {
