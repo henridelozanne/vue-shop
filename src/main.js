@@ -10,6 +10,8 @@ import {fb} from './firebase'
 import VueFirestore from 'vue-firestore'
 import VueCarousel from 'vue-carousel'
 
+import store from './store.js'
+
 Vue.use(VueCarousel);
 
 import Vue2Filters from 'vue2-filters'
@@ -21,6 +23,7 @@ Vue.use(VueFirestore, {
 });
 
 Vue.component('Navbar', require('./components/Navbar.vue').default)
+Vue.component('AddToCart', require('./components/AddToCart.vue').default)
 
 Vue.use(VueFirestore);
 
@@ -35,6 +38,7 @@ fb.auth().onAuthStateChanged(function() {
   if (!app) {
     new Vue({
       router,
+      store,
       render: h => h(App)
     }).$mount('#app')    
   }
