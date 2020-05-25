@@ -22,7 +22,50 @@
         <div class="col-md-9">
           Total Price : {{ this.$store.getters.totalPrice | currency }}
         </div>
+        <button class="btn btn-primary" @click="pay">Checkout</button>
       </div>
     </div>
   </div>
 </template>
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<script>
+import axios from 'axios';
+
+var stripe = Stripe('pk_test_R7D9yfu7xo9fBZmcOhkvi1II00uh7k5vYx');
+
+export default {
+  data() {
+    return {
+      sessionId: '',
+    };
+  },
+  methods: {
+    pay() {
+      let data = this.$store.state.cart.map(item => ({ [item.product_id] : item.productQuantity}));
+      data = Object.assign({}, ...data);
+
+      axios.get('https://us-central1-vue-shop-411af.cloudfunctions.net/CheckoutSession', {
+        params: {
+          products: data
+        }
+      })
+        .then(response => {
+          this.sessionId = response.data;
+          console.log('response ?', response.data);
+
+          stripe.redirectToCheckout({
+            sessionId: this.sessionId.id
+          }).then(function () {
+              console.log('in the last then');
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    }
+  }
+};
+
+</script>
