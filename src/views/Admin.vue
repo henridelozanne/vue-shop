@@ -5,9 +5,6 @@
         <div class="sidebar-content">
           <div class="sidebar-item sidebar-brand">
             <a href="#">Vue Shop</a>
-            <div id="close-sidebar">
-              <i class="fas fa-times"></i>
-            </div>
           </div>
           <div class="sidebar-item sidebar-header">
             <div class="user-pic">
@@ -43,13 +40,13 @@
               </li>
               <li>
                 <router-link to="/admin/overview">
-                  <i class="fa fa-chart-line"></i>
+                  <i class="fa fa-home"></i>
                   <span>Overview</span>
                 </router-link>
               </li>
               <li>
                 <router-link to="/admin/products">
-                  <i class="fab fa-amazon"></i>
+                  <i class="fa fa-tags"></i>
                   <span>Products</span>
                 </router-link>
               </li>
