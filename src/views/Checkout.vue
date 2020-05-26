@@ -6,18 +6,18 @@
         <div class="col-md-9">
           <h4>Checkout page</h4>  
           <ul>
-              <li v-for="item in this.$store.state.cart" :key="item.name">
-                <img :src="item.productImage" width="80px" class="align-self-center mr-3">
-                <div class="media-body">
-                  <h5 class="mt-0">
-                    {{item.name}}
-                    <span class="float-right" @click="$store.commit('removeFromCart', item)">X</span>
-                  </h5>
-                </div>
-                <p class="mt-0">{{item.price | currency}}</p>
-                <p class="mt-0">Quantity: {{item.productQuantity}}</p>
-              </li>
-            </ul>
+            <li v-for="item in this.$store.state.cart" :key="item.name">
+              <img :src="item.productImage" width="80px" class="align-self-center mr-3">
+              <div class="media-body">
+                <h5 class="mt-0">
+                  {{item.name}}
+                  <span class="float-right" @click="$store.commit('removeFromCart', item)">X</span>
+                </h5>
+              </div>
+              <p class="mt-0">{{item.price | currency}}</p>
+              <p class="mt-0">Quantity: {{item.productQuantity}}</p>
+            </li>
+          </ul>
         </div>
         <div class="col-md-9">
           Total Price : {{ this.$store.getters.totalPrice | currency }}
@@ -32,7 +32,6 @@
 
 <script>
 import axios from 'axios';
-
 var stripe = Stripe('pk_test_R7D9yfu7xo9fBZmcOhkvi1II00uh7k5vYx');
 
 export default {
@@ -45,12 +44,12 @@ export default {
     pay() {
       let data = this.$store.state.cart.map(item => ({ [item.product_id] : item.productQuantity}));
       data = Object.assign({}, ...data);
-
-      axios.get('https://us-central1-vue-shop-411af.cloudfunctions.net/CheckoutSession', {
-        params: {
-          products: data
-        }
-      })
+      axios
+        .get('https://us-central1-vue-shop-411af.cloudfunctions.net/CheckoutSession', {
+          params: {
+            products: data
+          }
+        })
         .then(response => {
           this.sessionId = response.data;
           console.log('response ?', response.data);

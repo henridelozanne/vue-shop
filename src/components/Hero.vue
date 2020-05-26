@@ -12,7 +12,6 @@
                 </p>
                 <div class="hero-btn mt-5">
                     <button class="btn custom-btn btn-info mr-4">Explore</button>
-                    <button class="btn custom-btn btn-outline-secondary">Products</button>
                 </div>
               </div>
             </div>
@@ -36,7 +35,6 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
   .hero{
     padding-top: 7rem;
