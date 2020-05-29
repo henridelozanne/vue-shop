@@ -117,3 +117,19 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.sidebar-header {
+  display: flex;
+  align-items: center;
+
+  .user-pic {
+    align-self: flex-start;
+  }
+
+  .user-info {
+    text-align: left;
+    margin-left: 20px;
+  }
+}
+</style>
