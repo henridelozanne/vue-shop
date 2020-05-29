@@ -4,7 +4,9 @@
       <nav id="sidebar" class="sidebar-wrapper">
         <div class="sidebar-content">
           <div class="sidebar-item sidebar-brand">
-            <a href="#">Vue Shop</a>
+            <router-link to="/admin">
+              <span>{{companyName}}</span>
+            </router-link>
           </div>
           <div class="sidebar-item sidebar-header">
             <div class="user-pic">
@@ -89,6 +91,7 @@ export default {
       firstName: undefined,
       lastName: undefined,
       email: undefined,
+      companyName: 'Vue Shop',
     };
   },
   methods:{
