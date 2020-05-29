@@ -11,8 +11,8 @@
               <img class="img-responsive img-rounded" src="/img/avatar.png" alt="User picture">
             </div>
             <div class="user-info">
-              <span class="user-name">Jhon
-                <strong>Smith</strong>
+              <span class="user-name">{{firstName}}
+                <strong>{{lastName}}</strong>
               </span>
               <span class="user-role"> {{email}} </span>
               <span class="user-status">
@@ -80,13 +80,14 @@
 </template>
 
 <script>
-import { fb } from '../firebase';
+import { fb, db } from '../firebase';
 
 export default {
   name: "admin",
   data(){
     return{
-      name: undefined,
+      firstName: undefined,
+      lastName: undefined,
       email: undefined,
     };
   },
@@ -103,8 +104,16 @@ export default {
   },
   created() {
     const user = fb.auth().currentUser;
-    this.name = user.displayName;
     this.email = user.email;
+    db.collection('profiles').doc(user.uid)
+                  .get()
+                  .then(doc => {
+                    this.firstName = doc.data().firstName;
+                    this.lastName = doc.data().lastName;
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  })
   },
 };
 </script>

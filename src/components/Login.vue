@@ -38,8 +38,12 @@
               <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="pills-register-tab">
                 <h5 class="text-center">Create New Account</h5>
                 <div class="form-group">
-                  <label for="name">Your name</label>
-                  <input type="text" v-model="name" class="form-control" id="name" placeholder="Your nice name">
+                  <label for="name">First name</label>
+                  <input type="text" v-model="firstName" class="form-control" id="name" placeholder="First name">
+                </div>
+                <div class="form-group">
+                  <label for="name">Last name</label>
+                  <input type="text" v-model="lastName" class="form-control" id="name" placeholder="Last name">
                 </div>
                 <div class="form-group">
                   <label for="email">Email address</label>
@@ -69,7 +73,8 @@ export default {
   name: "Login",
   data() {
     return {
-      name: undefined,
+      firstName: undefined,
+      lastName: undefined,
       email: undefined,
       password: undefined,
     };
@@ -98,7 +103,8 @@ export default {
                .then((user) => {
                   jQuery('#login').modal('hide');
                   db.collection('profiles').doc(user.user.uid).set({
-                    name: this.name
+                    firstName: this.firstName,
+                    lastName: this.lastName,
                   })
                   .then(() => {})
                   .catch((err) => {
