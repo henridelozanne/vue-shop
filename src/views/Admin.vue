@@ -3,12 +3,7 @@
     <div class="page-wrapper default-theme sidebar-bg bg1 toggled">
       <nav id="sidebar" class="sidebar-wrapper">
         <div class="sidebar-content">
-          <div class="sidebar-item sidebar-brand">
-            <router-link to="/admin">
-              <span>{{companyName}}</span>
-            </router-link>
-          </div>
-          <div class="sidebar-item sidebar-header">
+          <div class="sidebar-header">
             <div class="user-pic">
               <img class="img-responsive img-rounded" src="/img/avatar.png" alt="User picture">
             </div>
@@ -23,23 +18,13 @@
               </span>
             </div>
           </div>
-          <div class="sidebar-item sidebar-search">
-            <div>
-              <div class="input-group">
-                <input type="text" class="form-control search-menu" placeholder="Search...">
-                <div class="input-group-append">
-                  <span class="input-group-text">
-                    <i class="fa fa-search" aria-hidden="true"></i>
-                  </span>
-                </div>
-              </div>
-            </div>
+          <div class="sidebar-brand">
+            <router-link to="/admin">
+              <span>{{companyName}}</span>
+            </router-link>
           </div>
-          <div class=" sidebar-item sidebar-menu">
+          <div class="sidebar-menu">
             <ul>
-              <li class="header-menu">
-                <span>Menu</span>
-              </li>
               <li>
                 <router-link to="/admin/overview">
                   <i class="fa fa-home"></i>
@@ -122,9 +107,18 @@ export default {
 </script>
 
 <style lang="scss">
+.sidebar-brand {
+  margin-top: 65px;
+  text-align: left;
+}
+
 .sidebar-header {
   display: flex;
   align-items: center;
+  margin: 50px 0;
+  border-color: #464646;
+  border-top: 1px solid #464646;
+  border-bottom: 1px solid #464646;
 
   .user-pic {
     align-self: flex-start;
