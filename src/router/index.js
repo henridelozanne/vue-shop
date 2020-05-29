@@ -23,8 +23,8 @@ Vue.use(VueRouter)
     meta: { requiresAuth: true },
     children: [
       {
-        path: 'overview',
-        name: 'overview',
+        path: '/',
+        name: 'Home',
         component: Overview
       },
       {
