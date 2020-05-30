@@ -54,7 +54,7 @@
         </div>
       </nav>
       <main class="page-content">
-          <router-view />
+          <router-view @logout="logout"/>
       </main>
     </div>
   </div>

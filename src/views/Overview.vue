@@ -3,13 +3,13 @@
     <div class="container h-100">
       <div class="intro h-100">
         <div class="row h-100 justify-content-center align-items-center">
-          <div class="col-md-6">
+          <div class="col-md-6 text-left">
             <h3>Welcome to your admin page!</h3>
-            <p>Here you can manage your website's content so that it always stays up-to-date.</p>
-            <ul style="text-align: left">
-              <li>The products section will show you what products are currently online. That's also where you can add, update or remove some items.</li>
-              <li>In the profile section, you can check your user information and modify them as you need.</li>
-              <li>Log out and you'll be redirected to your public site.</li>
+            <p>Here you can manage your website content:</p>
+            <ul class="overview-list">
+              <li>The <router-link to="/admin/products">products</router-link> section will show you what products are currently online. That's also where you can add, update or remove some items.</li>
+              <li>In the <router-link to="/admin/profile">profile</router-link> section, you can check your user information and modify them as you need.</li>
+              <li><a href="#" @click="emitLogout()">Logout</a> and you'll be redirected to the public site.</li>
             </ul>
           </div>
           <div class="col-md-6">
@@ -25,7 +25,19 @@
 export default {
   name: "Overview",
   props: {
-    msg: String
-  }
+    msg: String,
+  },
+  methods: {
+    emitLogout() {
+      this.$emit('logout');
+    },
+  },
 };
 </script>
+
+<style lang="scss">
+.overview-list {
+  text-align: left;
+  padding-left: 30px;
+}
+</style>
