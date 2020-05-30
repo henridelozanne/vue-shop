@@ -44,73 +44,17 @@
       </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="product" tabindex="-1" role="dialog" aria-labelledby="editLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editLabel">Edit Product</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="row">
-              <!-- main product -->
-              <div class="col-md-8">
-                <div class="form-group">
-                  <input type="text" placeholder="Product Name" v-model="product.name" class="form-control">
-                </div>
-                <div class="form-group">
-                  <vue-editor v-model="product.description"></vue-editor>
-                </div>
-              </div>
-              <!-- product sidebar -->
-              <div class="col-md-4">
-                <h4 class="display-6">Product Details</h4>
-                <hr>
-                <div class="form-group">
-                  <input type="text" placeholder="Product price" v-model="product.price" class="form-control">
-                </div>
-                <div class="form-group">
-                  <input type="text" @keyup.188="addTag" placeholder="Product tags" v-model="tag" class="form-control">
-                  <div  class="d-flex">
-                    <p v-for="tag in product.tags" :key="tag">
-                        <span class="p-1">{{tag}}</span>
-                    </p>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="product_image">Product Images</label>
-                  <input type="file" @change="uploadImage" class="form-control">
-                </div>
-                <div class="form-group d-flex">
-                  <div class="p-1" v-for="(image, index) in product.images" :key="index">
-                      <div class="img-wrapp">
-                          <img :src="image" alt="" width="80px">
-                          <span class="delete-img" @click="deleteImage(image,index)">X</span>
-                      </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button @click="addProduct()" type="button" class="btn btn-primary" v-if="modal === 'new'">Save changes</button>
-            <button @click="updateProduct()" type="button" class="btn btn-primary" v-if="modal === 'edit'">Apply changes</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <product-form-modal :product="product" :modalType="modalType"
+                        @addProduct="addProduct" @updateProduct="updateProduct" />
+
   </div>
 </template>
 
 <script>
-import { fb, db } from '../firebase';
+import { db } from '../firebase';
 import jQuery from 'jquery'
 import Swal from 'sweetalert2';
-import { VueEditor } from 'vue2-editor';
+import ProductFormModal from '../components/ProductFormModal';
 
 const Toast = Swal.mixin({
   toast: true,
@@ -136,7 +80,7 @@ export default {
       activeItem:  undefined,
       products: [],
       tag:  undefined,
-      modal:  undefined,
+      modalType:  undefined,
     }
   },
   firestore(){
@@ -145,11 +89,11 @@ export default {
     }
   },
   components: {
-    'vue-editor': VueEditor,
+    'product-form-modal': ProductFormModal,
   },
   methods: {
     addNew() {
-      this.modal = 'new';
+      this.modalType = 'new';
       this.reset();
       jQuery('#product').modal('show');
     },
@@ -190,7 +134,7 @@ export default {
       })
     },
     editProduct(product) {
-      this.modal = 'edit';
+      this.modalType = 'edit';
       this.product = product;
       jQuery('#product').modal('show');
     },
@@ -202,36 +146,6 @@ export default {
       })
       jQuery('#product').modal('hide');
     },
-    uploadImage(e) {
-      if (e.target.files[0]) {
-        let file = e.target.files[0];
-        var storageRef = fb.storage().ref('products/'+ Math.random() + '_'  + file.name);
-        let uploadTask = storageRef.put(file);
-        uploadTask.on('state_changed', () => {}, function() {
-          // Handle unsuccessful uploads
-        }, () => {
-          // Handle successful uploads on complete
-          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-          uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-            this.product.images.push(downloadURL);
-          });
-        });
-      }
-    },
-    addTag() {
-      this.product.tags.push(this.tag);
-      this.tag = '';
-    },
-    deleteImage(img, index) {
-      let image = fb.storage().refFromURL(img);
-      this.product.images.splice(index, 1);
-      image
-        .delete()
-        .then(() => {})
-        .catch((err) => {
-          console.log('err : ', err);
-        })
-    }
   }
 };
 </script>
