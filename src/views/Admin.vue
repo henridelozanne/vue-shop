@@ -54,7 +54,7 @@
         </div>
       </nav>
       <main class="page-content">
-          <router-view @logout="logout"/>
+          <router-view @logout="logout" :userFirstName="firstName"/>
       </main>
     </div>
   </div>
@@ -101,6 +101,11 @@ export default {
 </script>
 
 <style lang="scss">
+.page-content {
+  height: 100%;
+  background-image: linear-gradient(to top, #dfe9f3 0%, white 100%);
+}
+
 .sidebar-brand {
   margin-top: 30px;
 }
