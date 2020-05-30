@@ -3,6 +3,11 @@
     <div class="page-wrapper default-theme sidebar-bg bg1 toggled">
       <nav id="sidebar" class="sidebar-wrapper">
         <div class="sidebar-content">
+          <div class="sidebar-brand">
+            <router-link to="/admin">
+              <span>{{companyName}}</span>
+            </router-link>
+          </div>
           <div class="sidebar-header">
             <div class="user-pic">
               <img class="img-responsive img-rounded" src="/img/avatar.png" alt="User picture">
@@ -17,11 +22,6 @@
                 <span>Online</span>
               </span>
             </div>
-          </div>
-          <div class="sidebar-brand">
-            <router-link to="/admin">
-              <span>{{companyName}}</span>
-            </router-link>
           </div>
           <div class="sidebar-menu">
             <ul>
@@ -102,14 +102,13 @@ export default {
 
 <style lang="scss">
 .sidebar-brand {
-  margin-top: 65px;
-  text-align: left;
+  margin-top: 30px;
 }
 
 .sidebar-header {
   display: flex;
   align-items: center;
-  margin: 50px 0;
+  margin: 50px 0 90px;
   border-color: #464646;
   border-top: 1px solid #464646;
   border-bottom: 1px solid #464646;
