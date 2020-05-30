@@ -1,9 +1,9 @@
 <template>
-  <div class="overview">
+  <div class="admin-section overview">
     <div class="container h-100">
       <div class="intro h-100">
         <div class="row h-100 justify-content-around">
-          <div class="col-md-6 text-left text-content">
+          <div class="col-md-6 text-left intro-text-content">
             <h3>Welcome, {{userFirstName}}</h3>
             <p>You can manage your website content in this admin page:</p>
             <ul class="overview-list">
@@ -34,21 +34,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.overview {
+.overview-svg {
+  height: 300px;
+}
+
+.overview-list {
+  padding-left: 30px;
+}
+</style>
+
+<style lang="scss">
+.admin-section {
   height: 100%;
-  padding: 15% 0;
+  padding: 15% 0 0;
+}
 
-  .overview-svg {
-    height: 300px;
-  }
-
-  .text-content {
-    margin-top: 40px;
-
-    .overview-list {
-      text-align: left;
-      padding-left: 30px;
-    }
-  }
+.intro-text-content {
+  margin-top: 40px;
 }
 </style>
