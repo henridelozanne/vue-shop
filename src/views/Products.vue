@@ -17,7 +17,9 @@
       </div>
       <div class="products-table-ctn">
         <h3 class="d-inline-block products-table-title">Product list</h3>
-        <button class="btn btn-primary float-right" @click="addNew">Add product</button>
+        <button class="btn btn-primary float-right" @click="addNew">
+          <i class="fa fa-plus add-icon"></i>Add product
+        </button>
         <div class="table-responsive products-table">
           <table class="table">
             <thead>
@@ -250,6 +252,10 @@ export default {
 
   .products-table-ctn {
     margin: 180px 0 150px;
+
+    .add-icon {
+      margin-right: 8px;
+    }
 
     .products-table {
       margin-top: 20px;
