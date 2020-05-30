@@ -42,24 +42,22 @@
                 <div class="input-group-prepend">
                   <label class="input-group-text" for="product-tags">Tags</label>
                 </div>
-                <input type="text" @keyup.188="addTag" @keyup.enter="addTag"
-                       v-model="tag" class="form-control" id="product-tags">
+                <input type="text" @keyup.enter="addTag" v-model="tag"
+                       class="form-control" id="product-tags">
               </div>
               <div class="badges-ctn">
                 <span v-for="(tag, i) in product.tags" :key="tag" class="badge-ctn" @click="deleteTag(tag, i)">
                   <span class="badge badge-secondary">{{tag}}</span>
                 </span>
               </div>
-              <div class="form-group">
-                <label for="product_image">Product Images</label>
+              <div class="form-group image-ctn">
+                <label for="product_image">Images</label>
                 <input type="file" @change="uploadImage" class="form-control">
               </div>
-              <div class="form-group d-flex">
-                <div class="p-1" v-for="(image, index) in product.images" :key="index">
-                    <div class="img-wrapp">
-                        <img :src="image" alt="" width="80px">
-                        <span class="delete-img" @click="deleteImage(image, index)">X</span>
-                    </div>
+              <div class="form-group text-left">
+                <div v-for="(image, index) in product.images" :key="index" class="image-thumb-ctn">
+                  <img :src="image" alt="">
+                  <span class="delete-img" @click="deleteImage(image, index)">X</span>
                 </div>
               </div>
             </div>
@@ -98,7 +96,7 @@ export default {
   },
   methods: {
     addTag() {
-      this.product.tags.push(this.tag.slice(0, -1));
+      this.product.tags.push(this.tag);
       this.tag = '';
     },
     callAddProduct() {
@@ -146,9 +144,9 @@ export default {
 }
 
 .badges-ctn {
-  display: flex;
   margin-top: 5px;
   max-width: 100%;
+  text-align: left;
 
   .badge-ctn {
     font-size: 20px;
@@ -161,6 +159,35 @@ export default {
     &:not(:last-of-type) {
       margin-right: 10px;
     }
+  }
+}
+
+.image-ctn {
+  margin-top: 20px;
+}
+
+.img-wrapper {
+  img {
+    height: 70px;
+  }
+}
+
+.image-thumb-ctn {
+  position: relative;
+  display: inline-block;
+  margin: 5px;
+
+  img {
+    height: 70px;
+    width: 70px;
+  }
+
+  .delete-img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #dc3545;
+    cursor: pointer;
   }
 }
 </style>
